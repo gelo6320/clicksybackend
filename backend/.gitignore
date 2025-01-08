@@ -4,6 +4,4 @@
 # Ignora la cartella node_modules
 node_modules/
 
-# Altre cartelle o file che vuoi ignorare (opzionale)
-dist/
 .DS_Store
