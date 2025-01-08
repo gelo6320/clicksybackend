@@ -13,6 +13,11 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Aggiungi una route per "/"
+app.get('/', (req, res) => {
+  res.send('Il backend è attivo e funzionante!');
+});
+
 // Sincronizza i modelli con il DB
 sequelize.sync({ alter: true })
   .then(() => {
