@@ -16,6 +16,8 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   dialectOptions: {
     ssl: {
       require: true,
+      // A volte è necessario disattivare la verifica del certificato
+      // se Render non usa certificati rilasciati da CA pubblica
       rejectUnauthorized: false
     }
   }
