@@ -23,7 +23,7 @@ sequelize.sync({ alter: true })
   });
 
 // Porta di ascolto
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`Backend in ascolto su porta ${PORT}`);
 });
