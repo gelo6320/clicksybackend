@@ -1,46 +1,47 @@
+// backend/src/models/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const { v4: uuidv4 } = require('uuid');
 
 const User = sequelize.define('User', {
   id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
+    primaryKey: true
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: true,
-    unique: true
-  },
-  googleId: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    unique: false
+    unique: true,
+    allowNull: false
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   referralCode: {
     type: DataTypes.STRING,
+    unique: true,
     allowNull: false,
-    unique: true
+    defaultValue: () => uuidv4().split('-')[0] // Genera un codice breve
   },
   referredBy: {
     type: DataTypes.STRING,
     allowNull: true
   },
-  nextClickTime: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
-  // se vuoi tracciare quanti referral ha portato
-  referralCount: {
+  referrals: {
     type: DataTypes.INTEGER,
     defaultValue: 0
-  }
+  },
+  // backend/src/models/User.js
+// Aggiungi un campo per tracciare se l'utente ha già cliccato tramite referral
+hasClickedReferral: {
+  type: DataTypes.BOOLEAN,
+  defaultValue: false
+}
+  // Altri campi...
 }, {
-  tableName: 'users'
+  tableName: 'users',
+  timestamps: true
 });
 
 module.exports = User;

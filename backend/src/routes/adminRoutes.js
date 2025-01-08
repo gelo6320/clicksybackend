@@ -1,18 +1,31 @@
+// backend/src/routes/adminRoutes.js
 const express = require('express');
 const router = express.Router();
-const {
-  registerUser,
-  loginUser,
-  clickButton,
-  applyReferralTimer,
-  getReferralLeaderboard
-} = require('../controllers/userController');
+const User = require('../models/User');
 
-// Rotte utente
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/click', clickButton);
-router.post('/referral', applyReferralTimer);
-router.get('/leaderboard', getReferralLeaderboard);
+// Middleware per autenticazione admin (da implementare)
+const authenticateAdmin = (req, res, next) => {
+  // Implementa la logica di autenticazione admin
+  next();
+};
+
+// Leaderboard
+router.get('/leaderboard', authenticateAdmin, async (req, res) => {
+  try {
+    const topReferrers = await User.findAll({
+      where: {
+        referrals: {
+          [Sequelize.Op.gt]: 0
+        }
+      },
+      order: [['referrals', 'DESC']],
+      limit: 10,
+      attributes: ['email', 'referrals']
+    });
+    res.status(200).json({ leaderboard: topReferrers });
+  } catch (error) {
+    res.status(500).json({ message: 'Errore del server.' });
+  }
+});
 
 module.exports = router;
